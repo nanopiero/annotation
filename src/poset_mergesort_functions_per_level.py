@@ -1646,7 +1646,7 @@ def get_suffixe(critere,subgroup,mode):
 
 
 
-def labelling_mode(**kwargs):
+def labelling_mode(lbls, **kwargs):
     
     #some paths:
     images_dir = kwargs['images_dir']
