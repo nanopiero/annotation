@@ -495,7 +495,7 @@ def get_sdg_from_AMOSlbls(graphs, lbls,param,mode, level = 'superframe'):
 
 def get_sdg_from_levels(graphs, lbls, param):
     names = sorted(list(lbls.keys()))
-    seqs = sorted({lbls[name][level] for name in names})
+    seqs = sorted({lbls[name]['sequence'] for name in names})
     seq2cpls = {seq: [(n,lbls[n]['level' + param])  \
                       for n in lbls if lbls[n]['sequence'] == seq] 
                 for seq in seqs}
