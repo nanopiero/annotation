@@ -600,11 +600,11 @@ def get_sdg_from_levels_ss(graphs, lbls, param, mode, level = 'sequence'):
                     level0 = level0.replace('m','f')
                     #zmax0 = level0[0]
                     # si borne non fournie ou changement de caméra: 
-                    #if (zmax0 == 'n') or ('c' in level0):
-                    #    pass
-                    elif zmax0 in ['f']:
-                        new_ug_edges |= {(n0, cpl[0]) for cpl in cpls \
-                                        if cpl[0] != n0}
+                    if (zmax0 == 'n') or ('c' in level0):
+                        pass
+                    #elif zmax0 in ['f']:
+                    #     new_ug_edges |= {(n0, cpl[0]) for cpl in cpls \
+                    #                    if cpl[0] != n0}
 
                     else:
                         for n1, level1 in cpls:
