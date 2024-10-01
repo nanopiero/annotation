@@ -1,26 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Oct  2 19:23:05 2019
-makes dic of comparisons without the 0 case
-@author: lepetit
-"""
 
+"""
+Modified from utiles_to_get_the_graphs (01/10/24).
+"""
 
 import random
 import shutil
 import os
 import matplotlib.pyplot as plt
-
 import numpy as np
-
 import pickle
-
 import re
 import json 
 import copy
-
-from utile import *
+from utils import *
 import networkx as nx
 
 #%%
@@ -909,12 +903,3 @@ def fill_qual_graph(graph):
     
 
 
-
-
-###################################################################################
-###################################################################################
-    ############################ learning with graph #########################
-
-
-
-#%%

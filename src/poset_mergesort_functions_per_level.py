@@ -11,9 +11,6 @@ import copy
 import networkx as nx
 import statistics as st #median for plotting
 import networkx.algorithms.dag as DAG
-#import config
-
-#mode = ''  #intialisation de la variable globale
 
 #%% Implémenter l'algo Poset-Mergesort pour des images:
 
@@ -214,7 +211,7 @@ def get_len(**kwargs):
 
 ##############################################################
 ##############################################################
-###################### tools for decomposition      #################
+###################### tools for decomposition      ##########
 ##############################################################
 ##############################################################
 
@@ -246,7 +243,7 @@ def decomposition_to_names(decomposition):
 
 ##############################################################
 ##############################################################
-###################### plotting images      ##################
+###################### to plot images       ##################
 ##############################################################
 ##############################################################
 
@@ -1398,9 +1395,11 @@ def oracle(graphs, name0, name1, **kwargs):  #use it for the second phase
         
     return reduced_compa, new_edges
 
-
-
-#Codage de Poset-Mergesort:
+##############################################
+##############################################
+# Main steps:
+##############################################
+##############################################
 
 
 def Poset_mergesort_im(t, **kwargs):
@@ -1420,9 +1419,6 @@ def Poset_mergesort_im(t, **kwargs):
 def rebuild_decomposition(tsafe,tsick,**kwargs):
     new_decomposition = Peeling_im(tsafe,tsick,**kwargs)
     return new_decomposition
-
-
-
 
 
 
@@ -1510,7 +1506,7 @@ def kill_a_pile_im(graphs, t, **kwargs):
 
 ##############################################################
 ##############################################################
-######################  decomposition to DiG       ###########
+###################### From decomposition to DiG   ###########
 ##############################################################
 ##############################################################
  
@@ -1532,10 +1528,6 @@ def comparison(graphs, name0, name1, **kwargs):
         reduced_compa = None
  
     return reduced_compa
-
-
-
-
 
 
 
@@ -1829,7 +1821,6 @@ def labelling_mode_without_dg2(**kwargs):
     return decomposition
 
         
-        #check if no cycle:
 """
 
 
@@ -1844,9 +1835,6 @@ if cycles!=[]:
     #need_to_resort = True
 """
 
-#if __name__ == '__main__':
-
-#%%Correct the graph: clean nodes to remove
 
 def remove_nodes(ntr,**kwargs):
     dg,ug,eg = get_graphs(**kwargs)
