@@ -264,9 +264,8 @@ def show_image(name, title, images_dir, **kwargs):
     plt.pause(pause) 
 
 
-def compare(name1,name2, mode, images_dir, critere, **kwargs):
+def compare(lbls, name1, name2, mode, images_dir, critere, **kwargs):
     global pause
-#    critere = kwargs['critere']
     image_path1 = os.path.join(images_dir, name1)
     image_path2 = os.path.join(images_dir, name2)
 
@@ -284,14 +283,14 @@ def compare(name1,name2, mode, images_dir, critere, **kwargs):
     while key == '':
         plt.pause(pause)
         plt.figure(num=0, figsize=(10,10))
-        plt.title('image 0  ' + name1[-10:-4] + ' ' + lbls[name1]['levelvv'])
+        plt.title('image 0  ' + name1[-10:-4] + ' ' + lbls[name1]['level' + critere])
         plt.imshow(im1)
         plt.pause(pause)
         key = input("critere : " + critere + "\n" + 'mode : ' + mode + "\n" + "Press enter to change image")
         print(key)
         if key == '':
             plt.clf()
-            plt.title('image 1  ' + name2[-10:-4] + ' ' + lbls[name2]['levelvv'])
+            plt.title('image 1  ' + name2[-10:-4] + ' ' + lbls[name2]['level' + critere])
             plt.imshow(im2)
         plt.pause(pause)
         key = input("critere : " + critere + "\n" +"Press enter to change image")
@@ -1293,7 +1292,7 @@ def get_possible_compas(graphs, name0, name1):
     
 
 
-def oracle(graphs, name0, name1, **kwargs):  #use it for the second phase
+def oracle(lbls, graphs, name0, name1, **kwargs):  #use it for the second phase
 #    root_cs = kwargs['root_cs']
 #    critere = kwargs['critere']
 #    images_dir   = kwargs['image_dir']
@@ -1329,7 +1328,7 @@ def oracle(graphs, name0, name1, **kwargs):  #use it for the second phase
         if len(possible_compas) == 1:
             compa = 3
         else:
-            compa = compare(name0,name1, **kwargs)
+            compa = compare(lbls, name0,name1, **kwargs)
         
         if compa == 4:  #on se donne un moyen de sortir
                 raise NameError('sortie de boucle')
@@ -1352,7 +1351,7 @@ def oracle(graphs, name0, name1, **kwargs):  #use it for the second phase
         
         while compa not in possible_compas:
             print('Conflict. Choose compa in : ' + str(possible_compas))
-            compa = compare(name0,name1, **kwargs)
+            compa = compare(lbls, name0, name1, **kwargs)
             if compa == 4:  #on se donne un moyen de sortir
                     raise NameError('sortie de boucle')
             if compa == 91:
@@ -1402,7 +1401,7 @@ def oracle(graphs, name0, name1, **kwargs):  #use it for the second phase
 ##############################################
 
 
-def Poset_mergesort_im(t, **kwargs):
+def Poset_mergesort_im(lbls, t, **kwargs):
     #first: take into account all the equality cases
     
     #then launch the recursive loop
@@ -1411,25 +1410,26 @@ def Poset_mergesort_im(t, **kwargs):
         return t 
     else: 
         m=n//2 
-        return Peeling_im(Poset_mergesort_im(t[:m],**kwargs),Poset_mergesort_im(t[m:], **kwargs), **kwargs)
+        return Peeling_im(lbls, Poset_mergesort_im(lbls, t[:m],**kwargs),
+                          Poset_mergesort_im(lbls, t[m:], **kwargs), **kwargs)
 
 
 
 
 def rebuild_decomposition(tsafe,tsick,**kwargs):
-    new_decomposition = Peeling_im(tsafe,tsick,**kwargs)
+    new_decomposition = Peeling_im(lbls, tsafe,tsick,**kwargs)
     return new_decomposition
 
 
 
-def Peeling_im(t1,t2, **kwargs):
+def Peeling_im(lbls, t1,t2, **kwargs):
     #step 1: fusion des listes ordonnées:
     graphs = get_graphs(**kwargs)
     
     Fail = False
     piles = t1 + t2
     while (not Fail) and (len(piles)>=max(len(t1),len(t2))):
-        graphs, piles, Fail = kill_a_pile_im(graphs, piles, **kwargs)
+        graphs, piles, Fail = kill_a_pile_im(lbls, graphs, piles, **kwargs)
     
     
     print('made the peeling of length: ' + str(len(decomposition_to_names(piles))))
@@ -1443,7 +1443,7 @@ def refresh(piles):
     return [pile for pile in piles if len(pile)>0]
 
 #%
-def kill_a_pile_im(graphs, t, **kwargs):
+def kill_a_pile_im(lbls, graphs, t, **kwargs):
 
     #dic = get_dic_trans(**kwargs)
     
@@ -1460,7 +1460,7 @@ def kill_a_pile_im(graphs, t, **kwargs):
         Fail = True
         cpls_of_index = make_cpls_of_index(l)
         for (i,j) in cpls_of_index:
-            compa, new_edges = oracle(graphs, piles[i][cursors[i]][0], piles[j][cursors[j]][0], **kwargs)
+            compa, new_edges = oracle(lbls, graphs, piles[i][cursors[i]][0], piles[j][cursors[j]][0], **kwargs)
             #draw_new_edges(graphs[0], new_edges, 'k', **kwargs)
             print("reduced compa :"  + str(compa))
             #cursors and pointers:
@@ -1531,7 +1531,7 @@ def comparison(graphs, name0, name1, **kwargs):
 
 
 
-def get_transversal_edges(graphs, elementij, listk, **kwargs):    
+def get_transversal_edges(lbls, graphs, elementij, listk, **kwargs):    
     lk = len(listk)
     print(kwargs['critere'])
     #get the bigger dominated if exists
@@ -1560,7 +1560,7 @@ def get_transversal_edges(graphs, elementij, listk, **kwargs):
         s = index_bigger-1
         while upper_compa not in [1,2,3] and s >=0:
             #print(s)
-            upper_compa, _ = oracle(graphs, elementij[0], listk[s][0], **kwargs)
+            upper_compa, _ = oracle(lbls, graphs, elementij[0], listk[s][0], **kwargs)
             if upper_compa == 0:
                 biggest_dominated = listk[s]
             s-=1
@@ -1577,7 +1577,7 @@ def get_transversal_edges(graphs, elementij, listk, **kwargs):
 
 
 
-def make_the_DiG(dg2, decomposition, **kwargs):
+def make_the_DiG(lbls, dg2, decomposition, **kwargs):
     graphs = get_graphs(**kwargs)
     dg,ug,eg = graphs
     ldec = len(decomposition)
@@ -1619,7 +1619,7 @@ def make_the_DiG(dg2, decomposition, **kwargs):
                 if k != i:
                     listk = decomposition[k]
                     print("new links between element " +  str(ll - j) +' of chain ' + str(i) +  ' and chain ' + str(k))
-                    transversal_edges = get_transversal_edges(graphs, element, listk, **kwargs)
+                    transversal_edges = get_transversal_edges(lbls, graphs, element, listk, **kwargs)
                     print(transversal_edges)
                     #draw_new_edges2(dg2, transversal_edges, color_transversal, **kwargs)
 #                    dg.add_edges_from(transversal_edges) 
@@ -1694,7 +1694,7 @@ def labelling_mode(**kwargs):
     
     while need_to_resort:       
         while need_to_resort2:
-            decomposition = Poset_mergesort_im(names_2, **kwargs) 
+            decomposition = Poset_mergesort_im(lbls, names_2, **kwargs) 
             print("need to (re)make the decomp :" + str(need_to_resort2))
             print("images to sort : " + str(len(names)))                           
             need_to_resort0, safe_piles, corrupted_piles = check_decomposition(decomposition, **kwargs) #check that chains are ok
@@ -1752,7 +1752,7 @@ if cycles!=[]:
 
 #if __name__ == '__main__':
 
-def labelling_mode_without_dg2(**kwargs):
+def labelling_mode_without_dg2(lbls, **kwargs):
     
     #some paths:
     images_dir = kwargs['images_dir']
@@ -1800,7 +1800,7 @@ def labelling_mode_without_dg2(**kwargs):
     
       
     while need_to_resort2:
-        decomposition = Poset_mergesort_im(names_2, **kwargs) 
+        decomposition = Poset_mergesort_im(lbls, names_2, **kwargs) 
         print("need to (re)make the decomp :" + str(need_to_resort2))
         print("images to sort : " + str(len(names)))                           
         need_to_resort0, safe_piles, corrupted_piles = check_decomposition(decomposition, **kwargs) #check that chains are ok
