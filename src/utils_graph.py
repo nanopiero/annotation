@@ -493,7 +493,7 @@ def get_sdg_from_AMOSlbls(graphs, lbls,param,mode, level = 'superframe'):
 
 
 
-def get_sdg_from_levels(graphs, lbls, param, mode, level = 'sequence'):
+def get_sdg_from_levels_vv(graphs, lbls, param, mode, level = 'sequence'):
     names = sorted(list(lbls.keys()))
     seqs = sorted({lbls[name][level] for name in names})
     seq2cpls = {seq: [(n,lbls[n]['levelvv'])  \
@@ -563,6 +563,76 @@ def get_sdg_from_levels(graphs, lbls, param, mode, level = 'sequence'):
 
     return graphs
 
+
+
+
+def get_sdg_from_levels_ss(graphs, lbls, param, mode, level = 'sequence'):
+    names = sorted(list(lbls.keys()))
+    seqs = sorted({lbls[name][level] for name in names})
+    seq2cpls = {seq: [(n,lbls[n]['levelss'])  \
+                      for n in lbls if lbls[n][level] == seq] 
+                for seq in seqs}
+
+    dg = graphs[0]
+    ug = graphs[1]
+    eg = graphs[2]
+
+    intraframe = True
+    
+    #adding edges:
+    new_dg_edges = set()
+    new_ug_edges = set()
+    new_eg_edges = set()
+
+    # Pour ss. pour chaque nom: on regarde au dessus
+    if param == 'ss':
+        for seq in seqs:
+            print(seq)
+            cpls = seq2cpls[seq]
+
+            for n0, level0 in cpls:
+                
+                # si pas annoté:
+                if level0 is None:
+                    pass
+                else:
+                    level0 = level0.replace('p','')
+                    level0 = level0.replace('m','f')
+                    #zmax0 = level0[0]
+                    # si borne non fournie ou changement de caméra: 
+                    #if (zmax0 == 'n') or ('c' in level0):
+                    #    pass
+                    elif zmax0 in ['f']:
+                        new_ug_edges |= {(n0, cpl[0]) for cpl in cpls \
+                                        if cpl[0] != n0}
+
+                    else:
+                        for n1, level1 in cpls:
+                            if (n0 != n1) and (level1 is not None):
+                                level1 = level1.replace('p','')
+                                level1 = level1.replace('m','f')
+                                zmin1 = level1[-1]
+                                if zmin1 not in ['n', 'f'] and not ('c' in level1):
+                                    if int(zmax0) > int(zmin1):
+                                        new_dg_edges |= {(n1, n0)}
+
+            two_cycles = new_dg_edges.intersection(invert_edges(new_dg_edges))
+            if len(two_cycles) > 0 :
+                 # print(new_dg_edges)
+                 print(two_cycles)
+                 print(seq2cpls[seq])
+
+                 raise Exception('')
+    print(new_dg_edges)      
+
+    dg.add_edges_from(new_dg_edges)
+    ug.add_edges_from(new_ug_edges)
+    eg.add_edges_from(new_eg_edges)
+    
+    rebuild(graphs) #attention: upgrader qd ug utile
+    kill_Id_edges(graphs)
+
+    return graphs
 
 
 

@@ -141,7 +141,7 @@ sequences_to_sort = [seq for seq in seq2images  if len(seq2images[seq])>1]
 print(sequences_to_sort, len(sequences_to_sort), len(sequences))
 #%%step 2 Get the global sdg/ug/eg from AMOS lbls to prefill the frame graphs
 
-graphs  = get_new_graphs(lbls)
+graphs = get_new_graphs(lbls)
 
 #for g in graphs:
 #    for name in g.nodes:
