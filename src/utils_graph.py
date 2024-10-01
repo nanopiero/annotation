@@ -14,7 +14,7 @@ import pickle
 import re
 import json 
 import copy
-from utils import *
+from .utils import *
 import networkx as nx
 
 #%%
