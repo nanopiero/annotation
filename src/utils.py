@@ -370,6 +370,11 @@ def edges_and_inverted_edges(edges):
 ####################################################
 ############## Building graphs #####################
 
+
+def read_gpickle(path):
+    with open(path, 'rb') as f:
+        return pickle.load(f)
+
 def write_gpickle(graph, path):
     with open(path, 'wb') as f:
         pickle.dump(graph, f)

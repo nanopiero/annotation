@@ -11,7 +11,7 @@ import copy
 import networkx as nx
 import statistics as st #median for plotting
 import networkx.algorithms.dag as DAG
-
+from .utils import read_gpickle, write_gpickle
 #%% Implémenter l'algo Poset-Mergesort pour des images:
 
 
@@ -154,7 +154,7 @@ def count_labels(**kwargs):
 def get_poset(root_cs, critere, subgroup, mode, **kwargs):
     suffixe = get_suffixe(critere,subgroup,mode)
     path_of_dg2 = os.path.join(root_cs, "poset" + suffixe + r".gpickle" )
-    dg2 = nx.read_gpickle(path_of_dg2)    
+    dg2 = read_gpickle(path_of_dg2)    
     return dg2
 
 def get_graph_by_eq(dg2, decomposition):  #réduit dg2 en divisant par la relation d'équibvlance
@@ -712,9 +712,9 @@ def save_new_compa(name1,name2,compa,dic_path, **kwargs):
 
 
 def get_graphs(graphs_paths,**kwargs):
-    dg = nx.read_gpickle(graphs_paths[0]) 
-    ug = nx.read_gpickle(graphs_paths[1])
-    eg =nx.read_gpickle(graphs_paths[2])
+    dg = read_gpickle(graphs_paths[0]) 
+    ug = read_gpickle(graphs_paths[1])
+    eg = read_gpickle(graphs_paths[2])
     return (dg, ug, eg)
 
 def get_dg2(root_cs, critere,subgroup,mode,**kwargs):
@@ -723,16 +723,16 @@ def get_dg2(root_cs, critere,subgroup,mode,**kwargs):
     else:
         suffixe = '_' + critere+subgroup    
     path_of_dg2 = os.path.join(root_cs, "poset" + suffixe + r".gpickle" )  
-    dg2 = nx.read_gpickle(path_of_dg2)     
+    dg2 = read_gpickle(path_of_dg2)     
     return dg2
 
 
 
 def save_graphs(graphs, graphs_paths, **kwargs):
     dg, ug, eg = graphs
-    nx.write_gpickle(dg, graphs_paths[0])
-    nx.write_gpickle(ug, graphs_paths[1])
-    nx.write_gpickle(eg, graphs_paths[2])
+    write_gpickle(dg, graphs_paths[0])
+    write_gpickle(ug, graphs_paths[1])
+    write_gpickle(eg, graphs_paths[2])
     print("graphs saved")
 
 def impact_new_dg_edge(graphs,dg_edge):
@@ -1666,7 +1666,7 @@ def labelling_mode(**kwargs):
     #check the previous jobs:
 
     try:
-        dg2 = nx.read_gpickle(path_of_dg2)
+        dg2 = read_gpickle(path_of_dg2)
         print("DG already found")
         need_to_resort = False
     except:
@@ -1730,7 +1730,7 @@ def labelling_mode(**kwargs):
             
     longest_path = nx.dag_longest_path(dg2)
 
-    nx.write_gpickle(dg2, path_of_dg2)
+    write_gpickle(dg2, path_of_dg2)
     
     return decomposition, dg2, longest_path
 
@@ -1772,7 +1772,7 @@ def labelling_mode_without_dg2(**kwargs):
     #check the previous jobs:
 
     try:
-        dg2 = nx.read_gpickle(path_of_dg2)
+        dg2 = read_gpickle(path_of_dg2)
         print("DG already found")
         need_to_resort = False
     except:

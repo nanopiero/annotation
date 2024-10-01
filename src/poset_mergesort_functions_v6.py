@@ -24,12 +24,9 @@ import networkx.algorithms.dag as DAG
 
 #read et write
 
-def read_gpickle(path)
-    with open(path, 'rb') as f:
-        return f
 
-def write_gpickle(graph, path):
-dg, graphs_paths[0])
+
+
 
 
 #%% Implémenter l'algo Poset-Mergesort pour des images:
