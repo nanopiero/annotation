@@ -247,9 +247,7 @@ for i, sequence in enumerate(['00010657_7002']):#enumerate(sequences_to_sort[400
     temp_labels_dir= os.path.join(labeling_root, r"labels")
 
 
-    
-    
-    
+
     #set mode depends on what is already done
     
     name_poset_vv = r'poset_vv.pickle'

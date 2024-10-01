@@ -370,6 +370,9 @@ def edges_and_inverted_edges(edges):
 ####################################################
 ############## Building graphs #####################
 
+def write_gpickle(graph, path):
+    with open(path, 'wb') as f:
+        pickle.dump(graph, f)
 
 
 def exclude_from_graph(graph,exclusion_cases):
