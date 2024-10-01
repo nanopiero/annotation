@@ -493,10 +493,10 @@ def get_sdg_from_AMOSlbls(graphs, lbls,param,mode, level = 'superframe'):
 
 
 
-def get_sdg_from_levels(graphs, lbls, param, mode, level = 'sequence'):
+def get_sdg_from_levels(graphs, lbls, param):
     names = sorted(list(lbls.keys()))
     seqs = sorted({lbls[name][level] for name in names})
-    seq2cpls = {seq: [(n,lbls[n]['levelvv'])  \
+    seq2cpls = {seq: [(n,lbls[n]['level' + param])  \
                       for n in lbls if lbls[n][level] == seq] 
                 for seq in seqs}
 
@@ -544,8 +544,8 @@ def get_sdg_from_levels(graphs, lbls, param, mode, level = 'sequence'):
                                     # vv noté de 0 à 9 avec 9 = brouillard
                                     if int(zmax0) > int(zmin1):
                                         new_dg_edges |= {(n1, n0)}
-                                        
-    elif param == 'sh' and mode == 'surface':
+
+    elif param == 'sc':
         for seq in seqs:
             print(seq)
             cpls = seq2cpls[seq]
