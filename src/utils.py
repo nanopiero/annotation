@@ -371,13 +371,21 @@ def edges_and_inverted_edges(edges):
 ############## Building graphs #####################
 
 
+
 def read_gpickle(path):
-    with open(path, 'rb') as f:
-        return pickle.load(f)
+    try:
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    except EOFError:
+        print(f"Error: The file at '{path}' is empty or corrupted.")
+        raise
+    except pickle.UnpicklingError:
+        print(f"Error: Failed to unpickle the file at '{path}'. The file might be corrupted.")
+        raise
 
 def write_gpickle(graph, path):
     with open(path, 'wb') as f:
-        pickle.dump(graph, f)
+        pickle.dump(graph, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def exclude_from_graph(graph,exclusion_cases):
