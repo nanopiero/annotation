@@ -1,13 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Éditeur de Spyder
-%in http://michel.stainer.pagesperso-orange.fr/PSIx/Informatique/Cours/Ch2-Tris.pdf
-
-
-
-
-"""
-
 import os  
 from PIL import Image  
 from PIL import ImageFile
