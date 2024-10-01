@@ -497,7 +497,7 @@ def get_sdg_from_levels(graphs, lbls, param):
     names = sorted(list(lbls.keys()))
     seqs = sorted({lbls[name][level] for name in names})
     seq2cpls = {seq: [(n,lbls[n]['level' + param])  \
-                      for n in lbls if lbls[n][level] == seq] 
+                      for n in lbls if lbls[n]['sequence'] == seq] 
                 for seq in seqs}
 
     dg = graphs[0]
