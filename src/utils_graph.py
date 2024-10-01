@@ -558,7 +558,7 @@ def get_sdg_from_levels(graphs, lbls, param):
                 else:
                     level0 = level0.replace('p','')
                     level0 = level0.replace('m','f')
-                    #zmax0 = level0[0]
+                    zmax0 = level0[0]
                     # si borne non fournie ou changement de caméra: 
                     if (zmax0 == 'n') or ('c' in level0):
                         pass
